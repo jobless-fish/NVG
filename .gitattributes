@@ -1,0 +1,35 @@
+# 줄바꿈을 LF로 통일 (Windows/Mac 팀원 간 diff 충돌 방지)
+* text=auto eol=lf
+
+# Windows 배치 파일은 CRLF여야 정상 실행됨
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Godot 텍스트 리소스 — 병합 시 diff로 확인
+*.gd     text eol=lf
+*.tscn   text eol=lf
+*.tres   text eol=lf
+*.godot  text eol=lf
+*.import text eol=lf
+*.uid    text eol=lf
+*.cfg    text eol=lf
+*.gdshader text eol=lf
+
+# 바이너리 — 병합·줄바꿈 변환 금지
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.glb  binary
+*.gltf binary
+*.fbx  binary
+*.blend binary
+*.ttf  binary
+*.otf  binary
+*.wav  binary
+*.ogg  binary
+*.mp3  binary
+*.pck  binary
+*.wasm binary
+*.exr  binary
+*.hdr  binary

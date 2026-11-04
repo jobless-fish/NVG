@@ -1,0 +1,27 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="NODEVERSE 3D Assets"
+config/description="NODEVERSE 연결섬 3D 월드 (메인·자료구조·알고리즘·SQL 섬) + 모듈형 3D 에셋 70종 (sample-assets 53종 + objects 20종, GLB + TSCN)"
+run/main_scene="res://scenes/NodeverseWorld.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[gui]
+
+theme/custom_font="res://fonts/NotoSansKR-VF.ttf"
+
+[rendering]
+
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
+anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/msaa_3d.web=0
+lights_and_shadows/directional_shadow/size.web=2048

@@ -1,0 +1,162 @@
+[
+  {
+    "file": "OBJ01_house_blue.png",
+    "size": [
+      1312,
+      1199
+    ],
+    "sha256": "e120124fded457f2e03be6a7bb3acd681143c66df81d98f6ef2a519ace308111"
+  },
+  {
+    "file": "OBJ02_cottage_blue.png",
+    "size": [
+      1312,
+      1199
+    ],
+    "sha256": "9b7f20fbe665af0a9791b0b223c6f84ea8d3ce117b8ac5bc68701ed50a4863bb"
+  },
+  {
+    "file": "OBJ03_crystal_beacon.png",
+    "size": [
+      1312,
+      1199
+    ],
+    "sha256": "7f05c859564bbd7fea27ff6b52ef5515b91ac3fca90f805a24fdb316d4ee348f"
+  },
+  {
+    "file": "OBJ04_quest_board.png",
+    "size": [
+      1402,
+      1122
+    ],
+    "sha256": "abbd5944406b02913d905b48a43c6cea10facbd54a6bcd7d142d2f02ab766e6f"
+  },
+  {
+    "file": "OBJ05_market_stall.png",
+    "size": [
+      1295,
+      1214
+    ],
+    "sha256": "3ad27db471984f1cace5b14f21dc16a9e6ba92884001f72c40845c44ae8de6c0"
+  },
+  {
+    "file": "OBJ06_round_plaza.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "e9a3c664dd16d79ddaa093c0a7babab1ea4c55060d95ab777092c8d8f5eb582b"
+  },
+  {
+    "file": "OBJ07_sql_database.png",
+    "size": [
+      1305,
+      1206
+    ],
+    "sha256": "254dbf847d00682943e75408344895a2b4df36cfb942d9aaad4dd0214c1cca26"
+  },
+  {
+    "file": "OBJ08_sql_archive.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "eebd11abd58d256e9f1bcff69814342aaeb6cb8fcbc768cb737368f370d007c5"
+  },
+  {
+    "file": "OBJ09_sql_library.png",
+    "size": [
+      1312,
+      1199
+    ],
+    "sha256": "9cae7e841318216d0a00de17ad3c8a02fdb03bd20532b5e75598b31991f512da"
+  },
+  {
+    "file": "OBJ10_sql_table.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "449debc323dcbf0a32280772726a575aa16263a03e4ef829fd9d03db988747a2"
+  },
+  {
+    "file": "OBJ11_sql_query_y.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "5a6451d1031334e806a6a645b45edd078c3b4e8f498314df2991cc00930b8445"
+  },
+  {
+    "file": "OBJ12_sort_steps.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "5cb6f912c9357ab6c41b729b2d6b60dca2a60d26fb1e0860d2d0f7a0b4aadfbc"
+  },
+  {
+    "file": "OBJ13_graph_node.png",
+    "size": [
+      1312,
+      1199
+    ],
+    "sha256": "df553b657a5785eadaf50832e6ed79c796274f2002c57609227561f98305652b"
+  },
+  {
+    "file": "OBJ14_graph_edge.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "58f3547a42a4d5646831ad4e6a07bf0285d33b735f2525257c58db8a86744f7e"
+  },
+  {
+    "file": "OBJ15_maze_garden.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "82bd55ad6a74f9db383f18040d3b3793f31d7ed2607ced59c449aaea5cc004c4"
+  },
+  {
+    "file": "OBJ16_branch_path.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "67b7643dc12c59d9d433201e5ae8a9dcd412d5dfccc372a5dfa9290b822e6969"
+  },
+  {
+    "file": "OBJ17_sign_main.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "7d6aab9799a0df16178de9ef25394b82b729aa5aed6ff69e7d33938fdd2365cb"
+  },
+  {
+    "file": "OBJ18_sign_ds.png",
+    "size": [
+      1703,
+      924
+    ],
+    "sha256": "71bbe3a5218c7fdceacf9aedc18bd3c1b911749d55a2868f8c2f71f3ab7c4f47"
+  },
+  {
+    "file": "OBJ19_sign_sql.png",
+    "size": [
+      1609,
+      977
+    ],
+    "sha256": "ad87c563d02cfd9c8a362e04d100b75b71d2e36a364fb63316d8e0633b992e24"
+  },
+  {
+    "file": "OBJ20_sign_algo.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "3b960e1ca2641b73a0383bc7f203dcd21754f18d61787e6bfd2a39541d39a01a"
+  }
+]

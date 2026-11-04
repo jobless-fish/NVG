@@ -1,0 +1,33 @@
+# ===== Godot 4 =====
+# 에디터 캐시·임포트 결과 (각자 PC에서 자동 재생성)
+.godot/
+/android/
+
+# 내보내기(Export) 결과물 — CI나 각자 빌드로 다시 만듦
+/build/
+*.pck
+*.apk
+*.aab
+
+# 내보내기 비밀값 (키스토어 비밀번호 등)
+export_credentials.cfg
+*.keystore
+
+# Mono / C# (사용할 경우)
+.mono/
+data_*/
+mono_crash.*.json
+
+# ===== 툴·OS =====
+.vscode/
+.idea/
+*.tmp
+*.translation
+Thumbs.db
+Desktop.ini
+.DS_Store
+__pycache__/
+*.pyc
+
+# ===== 개인 백업 =====
+backup_3d_project_*/
