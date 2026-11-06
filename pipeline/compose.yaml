@@ -1,0 +1,64 @@
+services:
+  kafka:
+    image: apache/kafka:3.9.0
+    user: root
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+    volumes: [kafka-data:/tmp/kraft-combined-logs]
+    healthcheck:
+      test: [CMD-SHELL, '/opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list']
+      interval: 10s
+      timeout: 10s
+      retries: 12
+  topic-init:
+    image: apache/kafka:3.9.0
+    user: root
+    depends_on:
+      kafka: {condition: service_healthy}
+    entrypoint: /opt/kafka/bin/kafka-topics.sh
+    command: --bootstrap-server kafka:9092 --create --if-not-exists --topic game.events.v1 --partitions 3 --replication-factor 1 --config retention.ms=604800000
+  mongo:
+    image: mongo:7.0.16
+    volumes: [mongo-data:/data/db]
+  gateway:
+    build: .
+    ports: ['127.0.0.1:8000:8000']
+    environment:
+      INGEST_KEY: ${INGEST_KEY:?Set INGEST_KEY in .env}
+    depends_on:
+      topic-init: {condition: service_completed_successfully}
+    restart: unless-stopped
+  raw-worker:
+    build: .
+    command: python raw_worker.py
+    depends_on:
+      topic-init: {condition: service_completed_successfully}
+      mongo: {condition: service_started}
+    restart: unless-stopped
+  spark:
+    user: root
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+    command: /opt/spark/bin/spark-submit --master local[2] --conf spark.jars.ivy=/tmp/ivy --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3 /app/stream.py
+    volumes: ['./stream.py:/app/stream.py:ro', 'checkpoints:/checkpoints']
+    depends_on:
+      topic-init: {condition: service_completed_successfully}
+      mongo: {condition: service_started}
+    restart: unless-stopped
+volumes:
+  kafka-data:
+  mongo-data:
+  checkpoints:
+
+
