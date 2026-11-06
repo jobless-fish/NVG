@@ -36,3 +36,6 @@ POST /v1/events로 한 이벤트씩 비동기 전송합니다. event_id는 최�
 
 ## EXE 종료 수집
 [종료 정책 및 런처 연결 계약](EXIT_POLICY.md)을 확인하세요. 모든 종료 분류는 exit_ 접두어입니다. `python test_exit.py`로 종료 격리·ID 충돌·오프라인 큐를 검증합니다.
+
+## 더미 파이프라인 실험실
+`docker compose --profile lab up -d --build`로 생성·전송·관측 화면을 실행합니다. [실험실 안내](LAB_GUIDE.md)를 참고하세요. 기본 주소는 http://localhost:8010 입니다.
