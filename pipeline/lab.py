@@ -94,3 +94,15 @@ def documents(run:str,collection:str):
     prefix={"$regex":"^lab-"+run+"-"}
     field="payload.player_id" if collection in ("raw_events","quarantine_events") else "_id.player_id" if collection=="metrics" else "player_id"
     return list(db[collection].find({field:prefix}).limit(30))
+
+@app.get("/overview",response_class=HTMLResponse)
+def overview():return Path("overview.html").read_text(encoding="utf-8")
+@app.get("/api/runs/{run}/charts",dependencies=[Depends(auth)])
+def charts(run:str):
+    record=db.lab_runs.find_one({"_id":run})
+    if not record:raise HTTPException(404)
+    prefix={"$regex":"^lab-"+run+"-"}
+    outcomes=list(db.lab_deliveries.aggregate([{"$match":{"run_id":run}},{"$group":{"_id":"$status","count":{"$sum":1}}}]))
+    def distribution(collection,field="event_type"):
+        return list(db[collection].aggregate([{"$match":{"player_id":prefix}},{"$group":{"_id":"$"+field,"count":{"$sum":1}}},{"$sort":{"_id":1}}]))
+    return {"run":record,"actual":counts(run),"outcomes":outcomes,"learning":distribution("curated"),"exits":[x for x in distribution("runtime_events") if x["_id"].startswith("exit_")],"quarantine":list(db.quarantine_events.aggregate([{"$match":{"payload.player_id":prefix}},{"$group":{"_id":"$reason","count":{"$sum":1}}}])),"unexpected":db.lab_deliveries.count_documents({"run_id":run,"pass":False})}
