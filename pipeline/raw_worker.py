@@ -11,6 +11,8 @@ try:
         if msg.error(): raise KafkaException(msg.error())
         # Kafka position preserves every delivery, including client retries.
         key=f"{msg.topic()}:{msg.partition()}:{msg.offset()}"
-        db.raw_events.replace_one({"_id":key},{"_id":key,"payload":json.loads(msg.value()),"partition":msg.partition(),"offset":msg.offset()},upsert=True)
+        try: payload=json.loads(msg.value())
+        except (ValueError, TypeError, UnicodeDecodeError): payload={"unparsed":msg.value().decode("utf-8",errors="replace")}
+        db.raw_events.replace_one({"_id":key},{"_id":key,"payload":payload,"partition":msg.partition(),"offset":msg.offset()},upsert=True)
         c.commit(message=msg,asynchronous=False)
 finally: c.close()

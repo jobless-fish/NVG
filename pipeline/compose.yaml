@@ -51,7 +51,7 @@ services:
       context: .
       dockerfile: Dockerfile.spark
     command: /opt/spark/bin/spark-submit --master local[2] --conf spark.jars.ivy=/tmp/ivy --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3 /app/stream.py
-    volumes: ['./stream.py:/app/stream.py:ro', 'checkpoints:/checkpoints']
+    volumes: ['./:/app:ro', 'checkpoints:/checkpoints']
     depends_on:
       topic-init: {condition: service_completed_successfully}
       mongo: {condition: service_started}

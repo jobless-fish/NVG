@@ -30,12 +30,12 @@ POST /v1/events, Content-Type: application/json, X-API-Key 헤더. OpenAPI는 /d
 
 ## 5. 저장 모델과 멱등성
 raw_events: _id=topic:partition:offset, payload=수신 이벤트 전체, partition, offset. 클라이언트 재전송도 원본으로 보존한다. 저장 성공 뒤 동기 offset commit을 수행한다.
-curated: _id=event_id. 동일 ID 재전송은 한 건으로 유지된다. session_id/problem_id/attempt_id/sequence 복합 인덱스를 만든다. 동일 ID의 다른 payload는 마지막 수신 값으로 대체하므로 클라이언트는 ID와 내용을 불변으로 유지해야 한다.
+curated: _id=event_id. 동일 ID 재전송은 한 건으로 유지된다. session_id/problem_id/attempt_id/sequence 복합 인덱스를 만든다. 동일 ID의 다른 payload는 quarantine_events로 격리하며 기존 내용을 유지한다. 클라이언트는 ID와 내용을 불변으로 유지해야 한다.
 metrics: _id={player_id,problem_id}; events, failures, successes, hints. 실패·성공·힌트 이벤트의 개수이며 세션 이탈이나 인과 진단은 아니다.
 
 ## 6. 처리와 복구
 Spark는 Kafka를 earliest에서 시작하고 이후 영속 checkpoint를 따른다. 배치는 5초 간격이며 foreachBatch에서 curated upsert 후 전체 집계를 갱신한다. 중간 장애 시 배치 재실행으로 같은 최종 결과를 만든다. 원본 소비자는 별도 consumer group이므로 Spark 장애와 독립적이다. 영속 볼륨은 Kafka·MongoDB·checkpoint에 각각 둔다.
-운영 지표: API 401/422/503 비율, Kafka 소비 지연, 원본/정제 건수, Spark 배치 시간, 디스크 잔량. 로그 확인 명령은 README 참조. 현재 잘못된 Kafka 직접 입력은 Spark 배치를 실패시키므로 Kafka 쓰기 경로를 게이트웨이로 제한한다. 운영 전 격리 토픽·경보를 추가한다.
+운영 지표: API 401/422/503 비율, Kafka 소비 지연, 원본/정제 건수, Spark 배치 시간, 디스크 잔량. 로그 확인 명령은 README 참조. 잘못된 Kafka 직접 입력은 quarantine_events로 격리한다. 운영 전 경보와 발행 주체별 접근 제어를 추가한다.
 
 ## 7. 목표 그림과 MVP 차이
 원본 Kafka Connect/MongoDB Sink 대신 Python 독립 소비자를 사용한다. Spark MongoDB Connector 대신 foreachBatch+PyMongo로 저장한다. 현재 수치 집계는 Spark 배치가 MongoDB aggregation을 호출한다. 대용량 목표 구성에서는 Spark 분산 정제·집계와 MongoDB Connector로 전환한다. 현재 드라이버 순차 upsert와 전체 집계는 소규모 로컬 검증용이다.
@@ -47,3 +47,5 @@ smoke.py: 인증 실패 401, 잘못된 필드 422, 정상 및 중복 접수 202,
 ## 9. 참고
 - Spark Kafka 공식 연동: https://spark.apache.org/docs/3.5.3/structured-streaming-kafka-integration.html
 - MongoDB Spark Connector: https://www.mongodb.com/docs/spark-connector/v10.x/
+
+종료 로그 정책과 런처 사용법은 [EXIT_POLICY.md](EXIT_POLICY.md)를 참조한다.
