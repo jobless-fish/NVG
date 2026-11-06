@@ -4,10 +4,10 @@ from datetime import datetime,timezone
 from fastapi import FastAPI, Header, HTTPException, Depends
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
-from pymongo import MongoClient
+from database import database
 from simulator import scenarios, send, now
 app=FastAPI(title="NODEVERSE Pipeline Lab")
-db=MongoClient("mongodb://mongo:27017",serverSelectionTimeoutMS=3000).nodeverse
+db=database()
 lock=threading.Lock();stop=threading.Event()
 def auth(x_api_key:str=Header(default="")):
     if not secrets.compare_digest(x_api_key,os.environ["INGEST_KEY"]):raise HTTPException(401,"키를 확인해 주세요")

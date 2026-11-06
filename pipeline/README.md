@@ -39,3 +39,6 @@ POST /v1/events로 한 이벤트씩 비동기 전송합니다. event_id는 최�
 
 ## 더미 파이프라인 실험실
 `docker compose --profile lab up -d --build`로 생성·전송·관측 화면을 실행합니다. [실험실 안내](LAB_GUIDE.md)를 참고하세요. 기본 주소는 http://localhost:8010 입니다.
+
+## 다른 PC로 이식
+연결 설정·MongoDB 백업/복원·Kafka 위치 ID 충돌 방지는 [이식 안내](MIGRATION.md)를 참고하세요.

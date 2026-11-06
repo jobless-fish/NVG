@@ -49,3 +49,6 @@ smoke.py: 인증 실패 401, 잘못된 필드 422, 정상 및 중복 접수 202,
 - MongoDB Spark Connector: https://www.mongodb.com/docs/spark-connector/v10.x/
 
 종료 로그 정책과 런처 사용법은 [EXIT_POLICY.md](EXIT_POLICY.md)를 참조한다.
+
+## 10. PC 간 이식
+DB 연결은 database.py와 MONGO_URI/MONGO_DATABASE 환경 변수로 분리한다. 같은 Docker 스택을 새 PC에서 실행할 때 mongo 서비스 DNS를 그대로 사용한다. MongoDB 백업·빈 DB 복원·컬렉션/인덱스 검증은 mongo_transfer.py를 사용하며, Kafka 데이터와 Spark checkpoint는 MongoDB 백업 범위에 포함하지 않는다. 새 Kafka 클러스터에서는 KAFKA_EPOCH를 새 값으로 설정한다. 세부 절차와 롤백 기준은 MIGRATION.md를 참조한다.

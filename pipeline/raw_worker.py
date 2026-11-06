@@ -1,8 +1,9 @@
+import os
 import json
 from confluent_kafka import Consumer, KafkaException
-from pymongo import MongoClient
+from database import database
 c=Consumer({"bootstrap.servers":"kafka:9092","group.id":"raw-archive-v1","auto.offset.reset":"earliest","enable.auto.commit":False})
-db=MongoClient("mongodb://mongo:27017").nodeverse
+db=database()
 c.subscribe(["game.events.v1"])
 try:
     while True:
@@ -10,7 +11,7 @@ try:
         if msg is None: continue
         if msg.error(): raise KafkaException(msg.error())
         # Kafka position preserves every delivery, including client retries.
-        key=f"{msg.topic()}:{msg.partition()}:{msg.offset()}"
+        key=os.environ.get("KAFKA_EPOCH","")+f"{msg.topic()}:{msg.partition()}:{msg.offset()}"
         try: payload=json.loads(msg.value())
         except (ValueError, TypeError, UnicodeDecodeError): payload={"unparsed":msg.value().decode("utf-8",errors="replace")}
         db.raw_events.replace_one({"_id":key},{"_id":key,"payload":payload,"partition":msg.partition(),"offset":msg.offset()},upsert=True)

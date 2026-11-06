@@ -46,12 +46,20 @@ services:
   raw-worker:
     build: .
     command: python raw_worker.py
+    environment:
+      MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017}
+      MONGO_DATABASE: ${MONGO_DATABASE:-nodeverse}
+      KAFKA_EPOCH: ${KAFKA_EPOCH:-}
     depends_on:
       topic-init: {condition: service_completed_successfully}
       mongo: {condition: service_healthy}
     restart: unless-stopped
   spark:
     user: root
+    environment:
+      MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017}
+      MONGO_DATABASE: ${MONGO_DATABASE:-nodeverse}
+      KAFKA_EPOCH: ${KAFKA_EPOCH:-}
     build:
       context: .
       dockerfile: Dockerfile.spark
@@ -68,6 +76,8 @@ services:
     ports: ['${LAB_BIND_IP:-127.0.0.1}:8010:8010']
     environment:
       INGEST_KEY: ${INGEST_KEY:?Set INGEST_KEY in .env}
+      MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017}
+      MONGO_DATABASE: ${MONGO_DATABASE:-nodeverse}
     depends_on:
       mongo: {condition: service_healthy}
       gateway: {condition: service_started}
