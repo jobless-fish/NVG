@@ -45,3 +45,6 @@ POST /v1/events로 한 이벤트씩 비동기 전송합니다. event_id는 최�
 
 ## Django 서버 간 연동
 2026-11-09 상대팀 PDF 기준의 별도 Bearer 클라이언트와 이전 전 구조 조사 도구를 [handoff 안내](handoff/README.md)에 추가했습니다. 실제 LAN 주소·키는 미확정이며 기존 API를 자동 전달하지 않습니다.
+
+## 직접 DB 적재
+Kafka/Spark 정제 후 서버 MySQL·MongoDB로 쓰는 별도 적재기와 필드 매핑안은 [direct 안내](direct/README.md)를 참고하세요. 실제 계정·상태 정책 확정 전 기존 스트림에는 자동 연결하지 않습니다.
