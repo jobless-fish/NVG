@@ -2,3 +2,6 @@
 __pycache__/
 lab-test-results.json
 incoming-test-results.json
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

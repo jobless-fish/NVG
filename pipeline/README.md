@@ -42,3 +42,6 @@ POST /v1/events로 한 이벤트씩 비동기 전송합니다. event_id는 최�
 
 ## 다른 PC로 이식
 연결 설정·MongoDB 백업/복원·Kafka 위치 ID 충돌 방지는 [이식 안내](MIGRATION.md)를 참고하세요.
+
+## Django 서버 간 연동
+2026-11-09 상대팀 PDF 기준의 별도 Bearer 클라이언트와 이전 전 구조 조사 도구를 [handoff 안내](handoff/README.md)에 추가했습니다. 실제 LAN 주소·키는 미확정이며 기존 API를 자동 전달하지 않습니다.
