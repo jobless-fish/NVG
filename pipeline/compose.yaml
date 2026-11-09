@@ -78,6 +78,8 @@ services:
       INGEST_KEY: ${INGEST_KEY:?Set INGEST_KEY in .env}
       MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017}
       MONGO_DATABASE: ${MONGO_DATABASE:-nodeverse}
+      VIEW_MONGO_URI: ${VIEW_MONGO_URI:-}
+      VIEW_MONGO_DATABASE: ${VIEW_MONGO_DATABASE:-nodeverse_logs}
     depends_on:
       mongo: {condition: service_healthy}
       gateway: {condition: service_started}
