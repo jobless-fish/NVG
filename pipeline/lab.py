@@ -22,6 +22,10 @@ def health():db.command("ping");return {"status":"ready"}
 @app.on_event("startup")
 def recover():
     db.lab_runs.update_many({"status":{"$in":["sending","settling"]}},{"$set":{"status":"interrupted","note":"Lab restarted; start a new batch"}})
+    db.raw_events.create_index([("payload.received_at",-1),("_id",-1)])
+    db.raw_events.create_index("payload.event_id")
+    db.raw_events.create_index("payload.player_id")
+    db.raw_events.create_index("payload.session_id")
     db.lab_deliveries.create_index([("run_id",1),("ordinal",1)],unique=True)
 def counts(run):
     prefix={"$regex":"^lab-"+run+"-"}
@@ -106,3 +110,6 @@ def charts(run:str):
     def distribution(collection,field="event_type"):
         return list(db[collection].aggregate([{"$match":{"player_id":prefix}},{"$group":{"_id":"$"+field,"count":{"$sum":1}}},{"$sort":{"_id":1}}]))
     return {"run":record,"actual":counts(run),"outcomes":outcomes,"learning":distribution("curated"),"exits":[x for x in distribution("runtime_events") if x["_id"].startswith("exit_")],"quarantine":list(db.quarantine_events.aggregate([{"$match":{"payload.player_id":prefix}},{"$group":{"_id":"$reason","count":{"$sum":1}}}])),"unexpected":db.lab_deliveries.count_documents({"run_id":run,"pass":False})}
+
+from incoming import router as incoming_router
+app.include_router(incoming_router(db,auth))
