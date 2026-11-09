@@ -89,7 +89,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 6
+  direct-writer:
+    build: .
+    profiles: [direct]
+    command: python direct/worker.py
+    env_file: direct/.env
+    environment:
+      MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017}
+      MONGO_DATABASE: ${MONGO_DATABASE:-nodeverse}
+    volumes: [direct-journals:/journals]
+    depends_on:
+      mongo: {condition: service_healthy}
+    restart: unless-stopped
 volumes:
+  direct-journals:
   kafka-data:
   mongo-data:
   checkpoints:

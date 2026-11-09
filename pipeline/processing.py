@@ -3,6 +3,19 @@ import hashlib, json
 from pymongo.errors import DuplicateKeyError
 
 def route(db, event, position):
+    if event.get("event_type")=="relational_bundle":
+        from bundle import Bundle
+        try:clean=Bundle.model_validate({k:v for k,v in event.items() if k!="received_at"}).model_dump(mode="json")
+        except Exception:
+            db.quarantine_events.update_one({"_id":position},{"$setOnInsert":{"reason":"invalid_bundle","payload":event}},upsert=True);return
+        digest=hashlib.sha256(json.dumps(clean,sort_keys=True,separators=(",",":")).encode()).hexdigest();eid=clean["event_id"]
+        try:db.event_registry.insert_one({"_id":eid,"hash":digest})
+        except DuplicateKeyError:
+            if db.event_registry.find_one({"_id":eid})["hash"]!=digest:
+                db.quarantine_events.update_one({"_id":position},{"$setOnInsert":{"reason":"event_id_conflict","payload":event}},upsert=True);return
+        db.curated_bundles.update_one({"_id":eid},{"$setOnInsert":{"manifest":clean["manifest"],"hash":digest}},upsert=True)
+        db.direct_outbox.update_one({"_id":eid},{"$setOnInsert":{"manifest":clean["manifest"],"hash":digest,"state":"pending","attempts":0,"received_at":event.get("received_at")}},upsert=True)
+        return
     from gateway import Event, RuntimeEvent
     try:
         model = RuntimeEvent if event.get("event_type", "").startswith(("exit_", "run_")) else Event

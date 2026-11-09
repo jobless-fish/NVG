@@ -48,3 +48,6 @@ POST /v1/events로 한 이벤트씩 비동기 전송합니다. event_id는 최�
 
 ## 직접 DB 적재
 Kafka/Spark 정제 후 서버 MySQL·MongoDB로 쓰는 별도 적재기와 필드 매핑안은 [direct 안내](direct/README.md)를 참고하세요. 실제 계정·상태 정책 확정 전 기존 스트림에는 자동 연결하지 않습니다.
+
+## 자동 원격 적재
+새 관계 레코드 수집 API /v2/play-records와 direct 프로필 writer를 [자동 적재 안내](direct/LIVE.md)에 추가했습니다. 기존 /v1/events를 자동 변환하는 기능과는 구분합니다.

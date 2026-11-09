@@ -64,3 +64,25 @@ def ingest(event: Union[Event, RuntimeEvent], x_api_key: str = Header(default=""
     except Exception: raise HTTPException(503,"Retry with the same event_id")
     if not result or result[0] is not None: raise HTTPException(503,"Retry with the same event_id")
     return {"event_id":str(event.event_id),"status":"accepted"}
+
+from bundle import Bundle
+@app.post("/v2/play-records",status_code=202)
+def ingest_bundle(bundle:Bundle,x_api_key:str=Header(default="")):
+    if not secrets.compare_digest(x_api_key,os.environ["INGEST_KEY"]):raise HTTPException(401,"Invalid ingestion key")
+    payload=bundle.model_dump(mode="json");payload["received_at"]=datetime.now(timezone.utc).isoformat()
+    result=[];p=producer()
+    try:
+        # Single partition key prevents reordering related manifest submissions.
+        key=payload["manifest"][0]["body"]["member_id"]
+        p.produce("game.events.v1",key=key,value=json.dumps(payload),on_delivery=lambda err,msg:result.append(err));p.flush(6)
+    except Exception:raise HTTPException(503,"Retry the identical bundle")
+    if not result or result[0] is not None:raise HTTPException(503,"Retry the identical bundle")
+    return {"event_id":str(bundle.event_id),"status":"accepted","meaning":"queued; remote storage not yet complete"}
+
+@app.get("/v2/play-records/{event_id}")
+def bundle_status(event_id:UUID,x_api_key:str=Header(default="")):
+    if not secrets.compare_digest(x_api_key,os.environ["INGEST_KEY"]):raise HTTPException(401,"Invalid ingestion key")
+    from database import database
+    row=database().direct_outbox.find_one({"_id":str(event_id)},{"manifest":0,"hash":0})
+    if not row:return {"event_id":str(event_id),"state":"not_staged","meaning":"not received or awaiting Spark"}
+    return row
