@@ -51,3 +51,6 @@ Kafka/Spark 정제 후 서버 MySQL·MongoDB로 쓰는 별도 적재기와 필�
 
 ## 자동 원격 적재
 새 관계 레코드 수집 API /v2/play-records와 direct 프로필 writer를 [자동 적재 안내](direct/LIVE.md)에 추가했습니다. 기존 /v1/events를 자동 변환하는 기능과는 구분합니다.
+
+## 최신 작업 현황·공유 자료
+[작업 상태와 문서 모음](docs/STATUS.md)에서 PC별 운영 지침, 현재 아키텍처, AWS 검토 결과와 남은 작업을 확인하세요.
