@@ -106,5 +106,3 @@ volumes:
   kafka-data:
   mongo-data:
   checkpoints:
-
-
