@@ -14,6 +14,7 @@ import os
 import secrets
 import threading
 from datetime import datetime, timezone
+from uuid import UUID
 
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
@@ -161,3 +162,15 @@ async def ingest_v1(request: Request, x_api_key: str = Header(default="")):
     """Kept until the transition ends: existing launcher runtime events only."""
     check_key(x_api_key)
     return await _ingest(request, "/v1/events", contract.RUNTIME_TYPES)
+
+
+@app.get("/v2/events/{event_id}")
+def remote_delivery(event_id: UUID, x_api_key: str = Header(default="")):
+    check_key(x_api_key)
+    from remote.outbox import local_db
+    row = local_db().remote_event_outbox.find_one({"_id": str(event_id)}, {
+        "state": 1, "reason": 1, "attempts": 1, "updated_at": 1, "archive_stored": 1, "result": 1})
+    if not row:
+        return {"event_id": str(event_id), "state": "not_staged", "meaning": "awaiting Silver/export; not a delivery confirmation"}
+    row["event_id"] = row.pop("_id")
+    return row

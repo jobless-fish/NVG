@@ -23,6 +23,8 @@ from pyspark.sql import DataFrame, Window
 from pyspark.sql import functions as F
 
 import tables as tb
+import sys
+sys.path.insert(0, "/opt/nodeverse")
 from tables import path
 
 log = logging.getLogger("delta_stream")
@@ -149,6 +151,9 @@ def start_silver():
                     (DeltaTable.forPath(spark, path(table)).alias("t")
                      .merge(source.alias("s"), "t.event_id = s.event_id")
                      .whenNotMatchedInsertAll().execute())
+                    if os.getenv("REMOTE_EXPORT_ENABLED", "0") == "1":
+                        from remote.outbox import stage
+                        stage(row.asDict(recursive=True) for row in source.toLocalIterator())
             finally:
                 source.unpersist()
             log.info("silver %s batch %s in %.1fs", name, batch_id, time.monotonic() - started)
@@ -444,6 +449,17 @@ def periodic(stop: threading.Event) -> None:
             log.exception("periodic refresh failed")
 
 
+
+def start_runtime_export():
+    import json
+    from remote.outbox import stage
+    rows = spark.readStream.format("delta").load(path("bronze.game_events")).where(F.col("topic") == "nv.runtime.v1")
+    def write(batch, batch_id):
+        stage(json.loads(row.value) for row in batch.select("value").toLocalIterator())
+    return (rows.writeStream.queryName("remote_runtime").foreachBatch(write)
+            .option("checkpointLocation", tb.checkpoint("remote-runtime-v1"))
+            .trigger(processingTime=STAGE_TRIGGER).start())
+
 def main() -> None:
     tb.ensure_tables(spark)
     queries = []
@@ -452,6 +468,8 @@ def main() -> None:
         spark.sparkContext.setLocalProperty("spark.scheduler.pool", pool)  # FAIR: one pool per stage
         started = starter()
         queries.extend(started if isinstance(started, tuple) else [started])
+    if os.getenv("REMOTE_EXPORT_ENABLED", "0") == "1":
+        queries.append(start_runtime_export())
     spark.sparkContext.setLocalProperty("spark.scheduler.pool", "periodic")
     log.info("started queries: %s", [q.name for q in queries])
     stop = threading.Event()

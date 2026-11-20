@@ -86,3 +86,6 @@ def bundle_status(event_id:UUID,x_api_key:str=Header(default="")):
     row=database().direct_outbox.find_one({"_id":str(event_id)},{"manifest":0,"hash":0})
     if not row:return {"event_id":str(event_id),"state":"not_staged","meaning":"not received or awaiting Spark"}
     return row
+
+from v2_bridge import router as v2_router
+app.include_router(v2_router)

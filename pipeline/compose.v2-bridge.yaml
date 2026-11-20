@@ -1,0 +1,11 @@
+# Optional bridge: preserve v1/bundle endpoints and forward only v2/events.
+services:
+  gateway:
+    env_file: .env.v2-bridge
+    networks:
+      - default
+      - v2-collector
+networks:
+  v2-collector:
+    external: true
+    name: ${V2_NETWORK_NAME:-nodeverse-v2-live_default}

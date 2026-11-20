@@ -141,7 +141,9 @@
       ],
       "environment": {
         "INGEST_KEY": "${INGEST_KEY:?Set INGEST_KEY in .env}",
-        "KAFKA_BOOTSTRAP": "kafka-1:9092,kafka-2:9092,kafka-3:9092"
+        "KAFKA_BOOTSTRAP": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
+        "MONGO_URI": "mongodb://mongo:27017",
+        "MONGO_DB": "nodeverse_logs"
       },
       "depends_on": {
         "topic-init": {
@@ -219,6 +221,7 @@
         "KAFKA_BOOTSTRAP": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
         "MONGO_URI": "mongodb://mongo:27017",
         "MONGO_DB": "nodeverse_logs",
+        "REMOTE_EXPORT_ENABLED": "${REMOTE_EXPORT_ENABLED:-0}",
         "BRONZE_TRIGGER": "${BRONZE_TRIGGER:-5 seconds}",
         "STAGE_TRIGGER": "${STAGE_TRIGGER:-1 second}",
         "SHUFFLE_PARTITIONS": "${SHUFFLE_PARTITIONS:-4}",
@@ -231,6 +234,7 @@
       },
       "volumes": [
         "./spark:/app:ro",
+        "./remote:/opt/nodeverse/remote:ro",
         "lake:/data",
         "ivy:/ivy"
       ],
@@ -238,6 +242,35 @@
         "topic-init": {
           "condition": "service_completed_successfully"
         },
+        "mongo": {
+          "condition": "service_healthy"
+        }
+      }
+    },
+    "remote-writer": {
+      "build": {
+        "context": ".",
+        "dockerfile": "Dockerfile"
+      },
+      "profiles": [
+        "remote"
+      ],
+      "restart": "unless-stopped",
+      "command": [
+        "python",
+        "-m",
+        "remote.worker"
+      ],
+      "env_file": ".env.remote",
+      "environment": {
+        "MONGO_URI": "mongodb://mongo:27017",
+        "MONGO_DB": "nodeverse_logs",
+        "REMOTE_CONTEXT_PATH": "/run/private/remote-context.json"
+      },
+      "volumes": [
+        "./.env.remote-context.json:/run/private/remote-context.json:ro"
+      ],
+      "depends_on": {
         "mongo": {
           "condition": "service_healthy"
         }

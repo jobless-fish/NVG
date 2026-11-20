@@ -53,7 +53,7 @@ services['topic-init'] = {
 services['collector'] = {
     'build': {'context': '.', 'dockerfile': 'Dockerfile'}, 'restart': 'unless-stopped',
     'ports': ['${COLLECTOR_BIND:-127.0.0.1}:${COLLECTOR_PORT:-8000}:8000'],
-    'environment': {'INGEST_KEY': '${INGEST_KEY:?Set INGEST_KEY in .env}', 'KAFKA_BOOTSTRAP': BOOTSTRAP},
+    'environment': {'INGEST_KEY': '${INGEST_KEY:?Set INGEST_KEY in .env}', 'KAFKA_BOOTSTRAP': BOOTSTRAP, 'MONGO_URI': 'mongodb://mongo:27017', 'MONGO_DB': 'nodeverse_logs'},
     'depends_on': {'topic-init': {'condition': 'service_completed_successfully'}},
     'healthcheck': {'test': ['CMD', 'python', '-c',
                             'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/health/ready", timeout=3)'],
@@ -79,13 +79,23 @@ services['spark'] = {
                 '--py-files', '/app/tables.py',
                 '/app/delta_stream.py'],
     'environment': {'KAFKA_BOOTSTRAP': BOOTSTRAP, 'MONGO_URI': 'mongodb://mongo:27017', 'MONGO_DB': 'nodeverse_logs',
-                    'BRONZE_TRIGGER': '${BRONZE_TRIGGER:-5 seconds}', 'STAGE_TRIGGER': '${STAGE_TRIGGER:-1 second}',
+                    'REMOTE_EXPORT_ENABLED': '${REMOTE_EXPORT_ENABLED:-0}', 'BRONZE_TRIGGER': '${BRONZE_TRIGGER:-5 seconds}', 'STAGE_TRIGGER': '${STAGE_TRIGGER:-1 second}',
                     'SHUFFLE_PARTITIONS': '${SHUFFLE_PARTITIONS:-4}', 'MAX_OFFSETS_PER_TRIGGER': '${MAX_OFFSETS_PER_TRIGGER:-10000}',
                     'LAKE_ROOT': '/data/delta', 'CHECKPOINT_ROOT': '/data/checkpoints', 'TZ': 'UTC',
                     'INGEST_KEY': '${INGEST_KEY:?Set INGEST_KEY in .env}', 'COLLECTOR_URL': 'http://collector:8000'},
-    'volumes': ['./spark:/app:ro', 'lake:/data', 'ivy:/ivy'],
+    'volumes': ['./spark:/app:ro', './remote:/opt/nodeverse/remote:ro', 'lake:/data', 'ivy:/ivy'],
     'depends_on': {'topic-init': {'condition': 'service_completed_successfully'},
                    'mongo': {'condition': 'service_healthy'}}}
+
+services['remote-writer'] = {
+    'build': {'context': '.', 'dockerfile': 'Dockerfile'},
+    'profiles': ['remote'], 'restart': 'unless-stopped',
+    'command': ['python', '-m', 'remote.worker'],
+    'env_file': '.env.remote',
+    'environment': {'MONGO_URI': 'mongodb://mongo:27017', 'MONGO_DB': 'nodeverse_logs',
+                    'REMOTE_CONTEXT_PATH': '/run/private/remote-context.json'},
+    'volumes': ['./.env.remote-context.json:/run/private/remote-context.json:ro'],
+    'depends_on': {'mongo': {'condition': 'service_healthy'}}}
 
 Path(__file__).with_name('compose.json').write_text(
     json.dumps({'name': 'nodeverse-dev', 'services': services, 'volumes': volumes}, indent=2) + '\n', encoding='utf-8')

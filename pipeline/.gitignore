@@ -5,3 +5,6 @@ incoming-test-results.json
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
+
+.env*
+!.env.example
