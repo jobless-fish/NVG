@@ -1,0 +1,128 @@
+{
+  "checked_at": "2026-11-20T02:12:10.777545+00:00",
+  "metrics_age_seconds": 4.5,
+  "queries": [
+    {
+      "name": "gold_update",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 6,
+      "event_time": {
+        "watermark": "2026-11-20T00:35:18.633Z"
+      },
+      "duration_ms": {
+        "latestOffset": 2,
+        "triggerExecution": 2
+      },
+      "input_rows": 0
+    },
+    {
+      "name": "silver_audit",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 22,
+      "event_time": null,
+      "duration_ms": {
+        "latestOffset": 13,
+        "triggerExecution": 13
+      },
+      "input_rows": 0
+    },
+    {
+      "name": "gold_alert",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 43,
+      "event_time": {
+        "watermark": "2026-11-20T00:51:13.764Z"
+      },
+      "duration_ms": {
+        "latestOffset": 4,
+        "triggerExecution": 4
+      },
+      "input_rows": 0
+    },
+    {
+      "name": "silver_update_events",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 66,
+      "event_time": {
+        "watermark": "2026-11-13T00:45:20.196Z"
+      },
+      "duration_ms": {
+        "latestOffset": 3,
+        "triggerExecution": 3
+      },
+      "input_rows": 0
+    },
+    {
+      "name": "bronze",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 35,
+      "event_time": null,
+      "duration_ms": {
+        "latestOffset": 7,
+        "triggerExecution": 7
+      },
+      "input_rows": 0
+    },
+    {
+      "name": "gold_1m",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 54,
+      "event_time": {
+        "watermark": "2026-11-20T00:51:13.764Z"
+      },
+      "duration_ms": {
+        "latestOffset": 3,
+        "triggerExecution": 3
+      },
+      "input_rows": 0
+    },
+    {
+      "name": "silver_learning_events",
+      "active": true,
+      "status": {
+        "message": "Waiting for next trigger",
+        "isDataAvailable": false,
+        "isTriggerActive": false
+      },
+      "batch_id": 49,
+      "event_time": {
+        "watermark": "2026-11-13T00:53:13.773Z"
+      },
+      "duration_ms": {
+        "latestOffset": 3,
+        "triggerExecution": 3
+      },
+      "input_rows": 0
+    }
+  ]
+}

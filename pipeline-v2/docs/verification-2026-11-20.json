@@ -1,0 +1,547 @@
+{
+  "date": "2026-11-20",
+  "project": "nodeverse-v2-review",
+  "scope": "isolated local pipeline; not game/dashboard or remote MySQL integration",
+  "verification": {
+    "bronze_vs_kafka": [
+      {
+        "topic": "nv.learning.v2",
+        "kafka_rows": 1709,
+        "bronze_rows": 1709
+      },
+      {
+        "topic": "nv.runtime.v1",
+        "kafka_rows": 1,
+        "bronze_rows": 1
+      },
+      {
+        "topic": "nv.update.v1",
+        "kafka_rows": 1,
+        "bronze_rows": 1
+      }
+    ],
+    "silver.learning_events": {
+      "rows": 1607,
+      "unique_event_ids": 1607,
+      "duplicates": 0
+    },
+    "silver.update_events": {
+      "rows": 1,
+      "unique_event_ids": 1,
+      "duplicates": 0
+    },
+    "silver.quarantine": {
+      "id_conflict": 1
+    },
+    "gold_vs_silver": {
+      "silver_attempts": 271,
+      "gold_attempts": 271,
+      "silver_successes": 101,
+      "gold_successes": 101,
+      "silver_failures": 99,
+      "gold_failures": 99,
+      "mismatched_windows": 0,
+      "examples": []
+    },
+    "passed": true,
+    "bronze_duplicate_offsets": 0,
+    "lag": {
+      "partitions": [
+        {
+          "topic": "nv.learning.v2",
+          "partition": 0,
+          "kafka_rows": 299,
+          "end_offset": 299,
+          "bronze_end": 299,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 1,
+          "kafka_rows": 384,
+          "end_offset": 384,
+          "bronze_end": 384,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 2,
+          "kafka_rows": 263,
+          "end_offset": 263,
+          "bronze_end": 263,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 3,
+          "kafka_rows": 292,
+          "end_offset": 292,
+          "bronze_end": 292,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 4,
+          "kafka_rows": 221,
+          "end_offset": 221,
+          "bronze_end": 221,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 5,
+          "kafka_rows": 250,
+          "end_offset": 250,
+          "bronze_end": 250,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 1,
+          "kafka_rows": 1,
+          "end_offset": 1,
+          "bronze_end": 1,
+          "lag": 0
+        },
+        {
+          "topic": "nv.update.v1",
+          "partition": 1,
+          "kafka_rows": 1,
+          "end_offset": 1,
+          "bronze_end": 1,
+          "lag": 0
+        }
+      ],
+      "total_lag": 0
+    },
+    "source_unique_vs_silver": {
+      "silver.learning_events": {
+        "bronze_unique_ids": 1607,
+        "silver_rows": 1607,
+        "matched": true
+      },
+      "silver.update_events": {
+        "bronze_unique_ids": 1,
+        "silver_rows": 1,
+        "matched": true
+      }
+    },
+    "history": {
+      "bronze.game_events": [
+        {
+          "version": 18,
+          "timestamp": "2026-11-20 00:36:40.506000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 17,
+          "timestamp": "2026-11-20 00:36:39.490000",
+          "operation": "STREAMING UPDATE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 16,
+          "timestamp": "2026-11-20 00:36:30.737000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 15,
+          "timestamp": "2026-11-20 00:36:29.380000",
+          "operation": "STREAMING UPDATE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numAddedFiles": "1"
+          }
+        }
+      ],
+      "silver.learning_events": [
+        {
+          "version": 17,
+          "timestamp": "2026-11-20 00:36:43.798000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 16,
+          "timestamp": "2026-11-20 00:36:42.862000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 15,
+          "timestamp": "2026-11-20 00:36:34.461000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 14,
+          "timestamp": "2026-11-20 00:36:31.837000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ],
+      "silver.update_events": [
+        {
+          "version": 2,
+          "timestamp": "2026-11-20 00:35:24.749000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 1,
+          "timestamp": "2026-11-20 00:30:17.687000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 0,
+          "timestamp": "2026-11-20 00:29:52.854000",
+          "operation": "CREATE TABLE",
+          "metrics": {}
+        }
+      ],
+      "gold.minigame_1m": [
+        {
+          "version": 13,
+          "timestamp": "2026-11-20 00:36:46.403000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "59",
+            "numTargetRowsInserted": "0",
+            "numTargetRowsUpdated": "1",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 12,
+          "timestamp": "2026-11-20 00:36:36.237000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "59",
+            "numTargetRowsInserted": "0",
+            "numTargetRowsUpdated": "1",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 11,
+          "timestamp": "2026-11-20 00:36:26.266000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 10,
+          "timestamp": "2026-11-20 00:36:23.964000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ]
+    },
+    "mongo_gold_mismatches": [],
+    "mongo_collections": {
+      "rt_minigame_1m": 59,
+      "rt_updates": 1,
+      "rt_alerts": 168,
+      "rt_summary": 1,
+      "rt_versions": 2
+    },
+    "checkpoints": {
+      "silver-audit-v2": {
+        "offset_files": 11,
+        "commit_files": 11
+      },
+      "bronze-v1": {
+        "offset_files": 11,
+        "commit_files": 11
+      },
+      "gold-failure-alerts-v1": {
+        "offset_files": 20,
+        "commit_files": 20
+      },
+      "silver-update_events-v2": {
+        "offset_files": 19,
+        "commit_files": 19
+      },
+      "gold-minigame-1m-v1": {
+        "offset_files": 23,
+        "commit_files": 23
+      },
+      "silver-learning_events-v2": {
+        "offset_files": 23,
+        "commit_files": 23
+      },
+      "gold-update-progress-v1": {
+        "offset_files": 4,
+        "commit_files": 4
+      }
+    }
+  },
+  "ingestion_load": {
+    "run_id": "review-load-1120",
+    "users": 100,
+    "target_rate": 50,
+    "duration_s": 30.0,
+    "sent": 1500,
+    "unique_event_ids": 1500,
+    "status": {
+      "202": 1500
+    },
+    "accepted_ratio": 1.0,
+    "achieved_rate": 50.0,
+    "latency_ms": {
+      "p50": 16.8,
+      "p95": 34.5,
+      "p99": 42.4
+    },
+    "finished_at": "2026-11-20T00:32:01.388Z"
+  },
+  "latency_baseline_seconds": [
+    8.32,
+    10.86,
+    9.11
+  ],
+  "latency_trial_seconds": [
+    16.18,
+    10.86,
+    10.87
+  ],
+  "selected_triggers": {
+    "bronze": "5 seconds",
+    "stage": "1 second"
+  },
+  "maintenance": [
+    {
+      "before_rows": 1708,
+      "after_rows": 1708,
+      "table": "bronze.game_events",
+      "sql": "OPTIMIZE bronze.game_events ZORDER BY (topic, partition)",
+      "before_files": 1,
+      "after_files": 1,
+      "metrics": [
+        {
+          "path": "file:/data/delta/bronze/game_events",
+          "metrics": {
+            "numFilesAdded": 1,
+            "numFilesRemoved": 1,
+            "filesAdded": {
+              "min": 338833,
+              "max": 338833,
+              "avg": 338833.0,
+              "totalFiles": 1,
+              "totalSize": 338833
+            },
+            "filesRemoved": {
+              "min": 338833,
+              "max": 338833,
+              "avg": 338833.0,
+              "totalFiles": 1,
+              "totalSize": 338833
+            },
+            "partitionsOptimized": 1,
+            "zOrderStats": {
+              "strategyName": "all",
+              "inputCubeFiles": {
+                "num": 0,
+                "size": 0
+              },
+              "inputOtherFiles": {
+                "num": 1,
+                "size": 338833
+              },
+              "inputNumCubes": 0,
+              "mergedFiles": {
+                "num": 1,
+                "size": 338833
+              },
+              "numOutputCubes": 1,
+              "mergedNumCubes": null
+            },
+            "clusteringStats": null,
+            "numBatches": 1,
+            "totalConsideredFiles": 1,
+            "totalFilesSkipped": 0,
+            "preserveInsertionOrder": false,
+            "numFilesSkippedToReduceWriteAmplification": 0,
+            "numBytesSkippedToReduceWriteAmplification": 0,
+            "startTimeMs": 1795134917999,
+            "endTimeMs": 0,
+            "totalClusterParallelism": 2,
+            "totalScheduledTasks": 0,
+            "autoCompactParallelismStats": null,
+            "deletionVectorStats": null,
+            "numTableColumns": 6,
+            "numTableColumnsWithStats": 6
+          }
+        }
+      ]
+    },
+    {
+      "before_rows": 1604,
+      "after_rows": 1604,
+      "table": "silver.learning_events",
+      "sql": "OPTIMIZE silver.learning_events ZORDER BY (minigame_id, player_id, event_id)",
+      "before_files": 1,
+      "after_files": 1,
+      "metrics": [
+        {
+          "path": "file:/data/delta/silver/learning_events",
+          "metrics": {
+            "numFilesAdded": 1,
+            "numFilesRemoved": 1,
+            "filesAdded": {
+              "min": 248162,
+              "max": 248162,
+              "avg": 248162.0,
+              "totalFiles": 1,
+              "totalSize": 248162
+            },
+            "filesRemoved": {
+              "min": 248162,
+              "max": 248162,
+              "avg": 248162.0,
+              "totalFiles": 1,
+              "totalSize": 248162
+            },
+            "partitionsOptimized": 1,
+            "zOrderStats": {
+              "strategyName": "all",
+              "inputCubeFiles": {
+                "num": 0,
+                "size": 0
+              },
+              "inputOtherFiles": {
+                "num": 1,
+                "size": 248162
+              },
+              "inputNumCubes": 0,
+              "mergedFiles": {
+                "num": 1,
+                "size": 248162
+              },
+              "numOutputCubes": 1,
+              "mergedNumCubes": null
+            },
+            "clusteringStats": null,
+            "numBatches": 1,
+            "totalConsideredFiles": 1,
+            "totalFilesSkipped": 0,
+            "preserveInsertionOrder": false,
+            "numFilesSkippedToReduceWriteAmplification": 0,
+            "numBytesSkippedToReduceWriteAmplification": 0,
+            "startTimeMs": 1795134922470,
+            "endTimeMs": 0,
+            "totalClusterParallelism": 2,
+            "totalScheduledTasks": 0,
+            "autoCompactParallelismStats": null,
+            "deletionVectorStats": null,
+            "numTableColumns": 21,
+            "numTableColumnsWithStats": 21
+          }
+        }
+      ]
+    },
+    {
+      "before_rows": 1,
+      "after_rows": 1,
+      "table": "silver.update_events",
+      "sql": "OPTIMIZE silver.update_events ZORDER BY (player_id, event_id)",
+      "before_files": 1,
+      "after_files": 1,
+      "metrics": [
+        {
+          "path": "file:/data/delta/silver/update_events",
+          "metrics": {
+            "numFilesAdded": 1,
+            "numFilesRemoved": 1,
+            "filesAdded": {
+              "min": 6948,
+              "max": 6948,
+              "avg": 6948.0,
+              "totalFiles": 1,
+              "totalSize": 6948
+            },
+            "filesRemoved": {
+              "min": 6948,
+              "max": 6948,
+              "avg": 6948.0,
+              "totalFiles": 1,
+              "totalSize": 6948
+            },
+            "partitionsOptimized": 1,
+            "zOrderStats": {
+              "strategyName": "all",
+              "inputCubeFiles": {
+                "num": 0,
+                "size": 0
+              },
+              "inputOtherFiles": {
+                "num": 1,
+                "size": 6948
+              },
+              "inputNumCubes": 0,
+              "mergedFiles": {
+                "num": 1,
+                "size": 6948
+              },
+              "numOutputCubes": 1,
+              "mergedNumCubes": null
+            },
+            "clusteringStats": null,
+            "numBatches": 1,
+            "totalConsideredFiles": 1,
+            "totalFilesSkipped": 0,
+            "preserveInsertionOrder": false,
+            "numFilesSkippedToReduceWriteAmplification": 0,
+            "numBytesSkippedToReduceWriteAmplification": 0,
+            "startTimeMs": 1795134924923,
+            "endTimeMs": 0,
+            "totalClusterParallelism": 2,
+            "totalScheduledTasks": 0,
+            "autoCompactParallelismStats": null,
+            "deletionVectorStats": null,
+            "numTableColumns": 16,
+            "numTableColumnsWithStats": 16
+          }
+        }
+      ]
+    }
+  ],
+  "broker_stop_test": "not executed: automatic approval review blocked by policy"
+}

@@ -1,0 +1,25 @@
+{
+  "read_only": true,
+  "all_records_reference_check_passed": true,
+  "errors": [],
+  "checked_counts": {
+    "game_sessions": 2,
+    "game_problems": 2,
+    "problem_runs": 2,
+    "solution_attempts": 2,
+    "gameplay_events": 2
+  },
+  "observed_session_topics": [
+    "stack"
+  ],
+  "observed_problem_topics": [
+    "stack"
+  ],
+  "collection_validators_present": {
+    "game_problems": false,
+    "problem_runs": false,
+    "solution_attempts": false,
+    "gameplay_events": false,
+    "game_sessions": false
+  }
+}

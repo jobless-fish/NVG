@@ -1,0 +1,23 @@
+Topic: nv.learning.v2	TopicId: W_5yuLSURzqf4mZcdZ4XLQ	PartitionCount: 6	ReplicationFactor: 3	Configs: min.insync.replicas=2,retention.ms=604800000
+	Topic: nv.learning.v2	Partition: 0	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1	Elr: 	LastKnownElr:
+	Topic: nv.learning.v2	Partition: 1	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2	Elr: 	LastKnownElr:
+	Topic: nv.learning.v2	Partition: 2	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3	Elr: 	LastKnownElr:
+	Topic: nv.learning.v2	Partition: 3	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3	Elr: 	LastKnownElr:
+	Topic: nv.learning.v2	Partition: 4	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1	Elr: 	LastKnownElr:
+	Topic: nv.learning.v2	Partition: 5	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2	Elr: 	LastKnownElr:
+Topic: nv.update.v1	TopicId: JwWEWWUgRfSfCVP8R3YPWA	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2,retention.ms=604800000
+	Topic: nv.update.v1	Partition: 0	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2	Elr: 	LastKnownElr:
+	Topic: nv.update.v1	Partition: 1	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3	Elr: 	LastKnownElr:
+	Topic: nv.update.v1	Partition: 2	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1	Elr: 	LastKnownElr:
+Topic: nv.bundle.v2	TopicId: xJNqN5uEQgiIa_ho0CdO-w	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2,retention.ms=604800000
+	Topic: nv.bundle.v2	Partition: 0	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2	Elr: 	LastKnownElr:
+	Topic: nv.bundle.v2	Partition: 1	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3	Elr: 	LastKnownElr:
+	Topic: nv.bundle.v2	Partition: 2	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1	Elr: 	LastKnownElr:
+Topic: nv.dlq.v1	TopicId: o81irOXfTFirHEEUkNVyIg	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2,retention.ms=604800000
+	Topic: nv.dlq.v1	Partition: 0	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1	Elr: 	LastKnownElr:
+	Topic: nv.dlq.v1	Partition: 1	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2	Elr: 	LastKnownElr:
+	Topic: nv.dlq.v1	Partition: 2	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3	Elr: 	LastKnownElr:
+Topic: nv.runtime.v1	TopicId: lp17bemwSJiCWgFnXCrA4w	PartitionCount: 3	ReplicationFactor: 3	Configs: min.insync.replicas=2,retention.ms=604800000
+	Topic: nv.runtime.v1	Partition: 0	Leader: 1	Replicas: 1,2,3	Isr: 1,2,3	Elr: 	LastKnownElr:
+	Topic: nv.runtime.v1	Partition: 1	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1	Elr: 	LastKnownElr:
+	Topic: nv.runtime.v1	Partition: 2	Leader: 3	Replicas: 3,1,2	Isr: 3,1,2	Elr: 	LastKnownElr:

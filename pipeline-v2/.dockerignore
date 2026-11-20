@@ -1,0 +1,14 @@
+_backup/
+.venv/
+__pycache__/
+.pytest_cache/
+*.jsonl
+results/
+dist/
+build/
+.env
+
+.env*
+*.sqlite*
+*.pem
+*.key

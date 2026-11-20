@@ -1,0 +1,19 @@
+{
+  "run_id": "load-c",
+  "users": 1200,
+  "target_rate": 200,
+  "duration_s": 150.0,
+  "sent": 30000,
+  "unique_event_ids": 30000,
+  "status": {
+    "202": 30000
+  },
+  "accepted_ratio": 1.0,
+  "achieved_rate": 200.0,
+  "latency_ms": {
+    "p50": 9.4,
+    "p95": 21.7,
+    "p99": 49.3
+  },
+  "finished_at": "2026-11-16T03:10:18.383Z"
+}
