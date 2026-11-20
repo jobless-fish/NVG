@@ -1,0 +1,7 @@
+FROM apache/spark:3.5.3-python3
+USER root
+# pymongo: Gold -> MongoDB upsert. pandas/pyarrow: Silver dedup state (applyInPandasWithState).
+# delta-spark: Python API only (the jar comes from --packages).
+RUN pip install --no-cache-dir pymongo==4.10.1 pandas==2.0.3 pyarrow==17.0.0 \
+ && pip install --no-cache-dir --no-deps delta-spark==3.2.1
+USER spark

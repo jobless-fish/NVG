@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "source": "junbum8398-blip/nodeverse-game scripts/learning_catalog.gd e3ceeca813f01a2865dbecaf0c4ba177387c7177",
+  "games": {
+    "ST01": {
+      "title": "순서가 있는 보관소",
+      "topic": "array",
+      "category": "DS"
+    },
+    "ST02": {
+      "title": "끊어진 운송로",
+      "topic": "linked_list",
+      "category": "DS"
+    },
+    "ST03": {
+      "title": "최근 작업 복구실",
+      "topic": "stack",
+      "category": "DS"
+    },
+    "ST04": {
+      "title": "접수 순서 안내소",
+      "topic": "queue",
+      "category": "DS"
+    },
+    "ST05": {
+      "title": "이름으로 찾는 물품대장",
+      "topic": "hash_table",
+      "category": "DS"
+    },
+    "DS09": {
+      "title": "가지 잇는 나무",
+      "topic": "tree",
+      "category": "DS"
+    },
+    "ST07": {
+      "title": "갈림길 창고",
+      "topic": "bst",
+      "category": "DS"
+    },
+    "ST08": {
+      "title": "긴급 작업 배정실",
+      "topic": "heap",
+      "category": "DS"
+    },
+    "DS10": {
+      "title": "연결망 건설소",
+      "topic": "graph",
+      "category": "DS"
+    },
+    "ST10": {
+      "title": "학습 지원 센터",
+      "topic": "integrated",
+      "category": "DS"
+    },
+    "ALG02": {
+      "title": "물건 찾기 비교실",
+      "topic": "search",
+      "category": "ALGO"
+    },
+    "ALG01": {
+      "title": "순서 맞춤 작업대",
+      "topic": "sorting",
+      "category": "ALGO"
+    },
+    "ALG03": {
+      "title": "나누고 합치는 공방",
+      "topic": "divide_sort",
+      "category": "ALGO"
+    },
+    "ST06": {
+      "title": "계층형 자료실",
+      "topic": "tree_traversal",
+      "category": "ALGO"
+    },
+    "ST09": {
+      "title": "연결망 조사실",
+      "topic": "graph_search",
+      "category": "ALGO"
+    },
+    "ALG04": {
+      "title": "최소 비용 배달소",
+      "topic": "shortest_path",
+      "category": "ALGO"
+    },
+    "SQL01": {
+      "title": "필요한 칸만 꺼내기",
+      "topic": "sql_query",
+      "category": "SQL"
+    },
+    "SQL02": {
+      "title": "같은 값은 같은 색으로",
+      "topic": "sql_group_by",
+      "category": "SQL"
+    },
+    "SQL03": {
+      "title": "번호가 같은 서랍끼리 연결",
+      "topic": "sql_join",
+      "category": "SQL"
+    },
+    "SQL04": {
+      "title": "계산한 값으로 다시 칠하기",
+      "topic": "sql_subquery",
+      "category": "SQL"
+    },
+    "DATA02": {
+      "title": "관측 준비실",
+      "topic": "data_profile",
+      "category": "DATA"
+    },
+    "DATA01": {
+      "title": "기록 수리 공방",
+      "topic": "data_cleaning",
+      "category": "DATA"
+    },
+    "DATA03": {
+      "title": "대표값 실험실",
+      "topic": "data_stats",
+      "category": "DATA"
+    },
+    "DATA04": {
+      "title": "차트 관측소",
+      "topic": "data_chart",
+      "category": "DATA"
+    }
+  }
+}

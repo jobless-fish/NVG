@@ -1,0 +1,828 @@
+{
+  "checked_at": "2026-11-20T00:51:35.076383+00:00",
+  "local_pipeline_passed": true,
+  "remote_integration_complete": false,
+  "scope": "Actual HTTP events to running local Docker services; simulated game sender, not latest EXE or teammate dashboard",
+  "http": {
+    "run_id": "e2e-full-1120",
+    "passed_http": true,
+    "unique_events": 255,
+    "minigames": [
+      "ALG01",
+      "ALG02",
+      "ALG03",
+      "ALG04",
+      "DATA01",
+      "DATA02",
+      "DATA03",
+      "DATA04",
+      "DS09",
+      "DS10",
+      "SQL01",
+      "SQL02",
+      "SQL03",
+      "SQL04",
+      "ST01",
+      "ST02",
+      "ST03",
+      "ST04",
+      "ST05",
+      "ST06",
+      "ST07",
+      "ST08",
+      "ST09",
+      "ST10"
+    ],
+    "initial": {
+      "202": 255
+    },
+    "replay": {
+      "202": 255
+    },
+    "conflict_status": 202,
+    "negative": [
+      {
+        "name": "too_old",
+        "status": 422,
+        "dlq": true
+      },
+      {
+        "name": "future",
+        "status": 422,
+        "dlq": true
+      },
+      {
+        "name": "extra_detail",
+        "status": 422,
+        "dlq": true
+      },
+      {
+        "name": "invalid_json",
+        "status": 422,
+        "dlq": true
+      }
+    ],
+    "unauthorized": 401,
+    "note": "202 proves Kafka receipt only; run the storage verifier afterwards"
+  },
+  "load": {
+    "run_id": "e2e-load-1120",
+    "users": 100,
+    "target_rate": 50,
+    "duration_s": 120.0,
+    "sent": 6000,
+    "unique_event_ids": 6000,
+    "status": {
+      "202": 6000
+    },
+    "accepted_ratio": 1.0,
+    "achieved_rate": 50.0,
+    "latency_ms": {
+      "p50": 16.3,
+      "p95": 32.7,
+      "p99": 41.6
+    },
+    "finished_at": "2026-11-20T00:47:21.319Z"
+  },
+  "latency_seconds": [
+    10.29,
+    9.12,
+    10.85
+  ],
+  "storage": {
+    "bronze_vs_kafka": [
+      {
+        "topic": "nv.learning.v2",
+        "kafka_rows": 8189,
+        "bronze_rows": 8189
+      },
+      {
+        "topic": "nv.runtime.v1",
+        "kafka_rows": 17,
+        "bronze_rows": 17
+      },
+      {
+        "topic": "nv.update.v1",
+        "kafka_rows": 19,
+        "bronze_rows": 19
+      }
+    ],
+    "silver.learning_events": {
+      "rows": 7848,
+      "unique_event_ids": 7848,
+      "duplicates": 0
+    },
+    "silver.update_events": {
+      "rows": 10,
+      "unique_event_ids": 10,
+      "duplicates": 0
+    },
+    "silver.quarantine": {
+      "id_conflict": 2
+    },
+    "gold_vs_silver": {
+      "silver_attempts": 1192,
+      "gold_attempts": 1192,
+      "silver_successes": 494,
+      "gold_successes": 494,
+      "silver_failures": 566,
+      "gold_failures": 566,
+      "mismatched_windows": 0,
+      "examples": []
+    },
+    "passed": true,
+    "bronze_duplicate_offsets": 0,
+    "lag": {
+      "partitions": [
+        {
+          "topic": "nv.learning.v2",
+          "partition": 0,
+          "kafka_rows": 1318,
+          "end_offset": 1318,
+          "bronze_end": 1318,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 1,
+          "kafka_rows": 1400,
+          "end_offset": 1400,
+          "bronze_end": 1400,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 2,
+          "kafka_rows": 1389,
+          "end_offset": 1389,
+          "bronze_end": 1389,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 3,
+          "kafka_rows": 1376,
+          "end_offset": 1376,
+          "bronze_end": 1376,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 4,
+          "kafka_rows": 1340,
+          "end_offset": 1340,
+          "bronze_end": 1340,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 5,
+          "kafka_rows": 1366,
+          "end_offset": 1366,
+          "bronze_end": 1366,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 0,
+          "kafka_rows": 8,
+          "end_offset": 8,
+          "bronze_end": 8,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 1,
+          "kafka_rows": 7,
+          "end_offset": 7,
+          "bronze_end": 7,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 2,
+          "kafka_rows": 2,
+          "end_offset": 2,
+          "bronze_end": 2,
+          "lag": 0
+        },
+        {
+          "topic": "nv.update.v1",
+          "partition": 0,
+          "kafka_rows": 18,
+          "end_offset": 18,
+          "bronze_end": 18,
+          "lag": 0
+        },
+        {
+          "topic": "nv.update.v1",
+          "partition": 1,
+          "kafka_rows": 1,
+          "end_offset": 1,
+          "bronze_end": 1,
+          "lag": 0
+        }
+      ],
+      "total_lag": 0
+    },
+    "source_unique_vs_silver": {
+      "silver.learning_events": {
+        "bronze_unique_ids": 7848,
+        "silver_rows": 7848,
+        "matched": true
+      },
+      "silver.update_events": {
+        "bronze_unique_ids": 10,
+        "silver_rows": 10,
+        "matched": true
+      }
+    },
+    "history": {
+      "bronze.game_events": [
+        {
+          "version": 62,
+          "timestamp": "2026-11-20 00:48:52.454000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 61,
+          "timestamp": "2026-11-20 00:48:51.220000",
+          "operation": "STREAMING UPDATE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 60,
+          "timestamp": "2026-11-20 00:48:42.422000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 59,
+          "timestamp": "2026-11-20 00:48:41.318000",
+          "operation": "STREAMING UPDATE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numAddedFiles": "1"
+          }
+        }
+      ],
+      "silver.learning_events": [
+        {
+          "version": 51,
+          "timestamp": "2026-11-20 00:48:56.918000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 50,
+          "timestamp": "2026-11-20 00:48:53.314000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 49,
+          "timestamp": "2026-11-20 00:48:45.383000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 48,
+          "timestamp": "2026-11-20 00:48:43.583000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ],
+      "silver.update_events": [
+        {
+          "version": 4,
+          "timestamp": "2026-11-20 00:45:30.589000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 3,
+          "timestamp": "2026-11-20 00:45:25.877000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "9",
+            "numTargetRowsInserted": "9",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 2,
+          "timestamp": "2026-11-20 00:35:24.749000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 1,
+          "timestamp": "2026-11-20 00:30:17.687000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ],
+      "gold.minigame_1m": [
+        {
+          "version": 32,
+          "timestamp": "2026-11-20 00:48:56.854000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "132",
+            "numTargetRowsInserted": "0",
+            "numTargetRowsUpdated": "1",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 31,
+          "timestamp": "2026-11-20 00:48:46.745000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "132",
+            "numTargetRowsInserted": "0",
+            "numTargetRowsUpdated": "1",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 30,
+          "timestamp": "2026-11-20 00:48:36.285000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 29,
+          "timestamp": "2026-11-20 00:48:34.905000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ]
+    },
+    "mongo_gold_mismatches": [],
+    "mongo_extra_documents": {},
+    "http_fixture_verification": {
+      "run_id": "e2e-full-1120",
+      "expected_unique": 255,
+      "conflict_quarantined": 1,
+      "failures": [],
+      "passed": true
+    },
+    "mongo_collections": {
+      "rt_minigame_1m": 132,
+      "rt_updates": 2,
+      "rt_alerts": 337,
+      "rt_summary": 1,
+      "rt_versions": 2
+    },
+    "checkpoints": {
+      "silver-audit-v2": {
+        "offset_files": 19,
+        "commit_files": 19
+      },
+      "bronze-v1": {
+        "offset_files": 33,
+        "commit_files": 33
+      },
+      "gold-failure-alerts-v1": {
+        "offset_files": 39,
+        "commit_files": 39
+      },
+      "silver-update_events-v2": {
+        "offset_files": 62,
+        "commit_files": 62
+      },
+      "gold-minigame-1m-v1": {
+        "offset_files": 50,
+        "commit_files": 50
+      },
+      "silver-learning_events-v2": {
+        "offset_files": 45,
+        "commit_files": 45
+      },
+      "gold-update-progress-v1": {
+        "offset_files": 6,
+        "commit_files": 6
+      }
+    }
+  },
+  "remote_connection": {
+    "mysql": {
+      "connected": true,
+      "members": 2
+    },
+    "mongo": {
+      "tcp_connected": false,
+      "error": "ConnectionRefusedError",
+      "code": 111
+    }
+  },
+  "unit_tests": {
+    "passed": 34,
+    "warnings": 1
+  },
+  "fixes": [
+    "nonzero simulator exit on failure",
+    "immutable update replay",
+    "future runtime event validation",
+    "collector and mongo readiness health checks",
+    "probe readiness wait",
+    "full outer Gold comparison and four Mongo collections comparison",
+    "restore Delta default MERGE source materialization"
+  ],
+  "post_fix_verification": {
+    "bronze_vs_kafka": [
+      {
+        "topic": "nv.learning.v2",
+        "kafka_rows": 8210,
+        "bronze_rows": 8210
+      },
+      {
+        "topic": "nv.runtime.v1",
+        "kafka_rows": 17,
+        "bronze_rows": 17
+      },
+      {
+        "topic": "nv.update.v1",
+        "kafka_rows": 19,
+        "bronze_rows": 19
+      }
+    ],
+    "silver.learning_events": {
+      "rows": 7869,
+      "unique_event_ids": 7869,
+      "duplicates": 0
+    },
+    "silver.update_events": {
+      "rows": 10,
+      "unique_event_ids": 10,
+      "duplicates": 0
+    },
+    "silver.quarantine": {
+      "id_conflict": 2
+    },
+    "gold_vs_silver": {
+      "silver_attempts": 1196,
+      "gold_attempts": 1196,
+      "silver_successes": 495,
+      "gold_successes": 495,
+      "silver_failures": 568,
+      "gold_failures": 568,
+      "mismatched_windows": 0,
+      "examples": []
+    },
+    "passed": true,
+    "bronze_duplicate_offsets": 0,
+    "lag": {
+      "partitions": [
+        {
+          "topic": "nv.learning.v2",
+          "partition": 0,
+          "kafka_rows": 1318,
+          "end_offset": 1318,
+          "bronze_end": 1318,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 1,
+          "kafka_rows": 1402,
+          "end_offset": 1402,
+          "bronze_end": 1402,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 2,
+          "kafka_rows": 1402,
+          "end_offset": 1402,
+          "bronze_end": 1402,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 3,
+          "kafka_rows": 1382,
+          "end_offset": 1382,
+          "bronze_end": 1382,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 4,
+          "kafka_rows": 1340,
+          "end_offset": 1340,
+          "bronze_end": 1340,
+          "lag": 0
+        },
+        {
+          "topic": "nv.learning.v2",
+          "partition": 5,
+          "kafka_rows": 1366,
+          "end_offset": 1366,
+          "bronze_end": 1366,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 0,
+          "kafka_rows": 8,
+          "end_offset": 8,
+          "bronze_end": 8,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 1,
+          "kafka_rows": 7,
+          "end_offset": 7,
+          "bronze_end": 7,
+          "lag": 0
+        },
+        {
+          "topic": "nv.runtime.v1",
+          "partition": 2,
+          "kafka_rows": 2,
+          "end_offset": 2,
+          "bronze_end": 2,
+          "lag": 0
+        },
+        {
+          "topic": "nv.update.v1",
+          "partition": 0,
+          "kafka_rows": 18,
+          "end_offset": 18,
+          "bronze_end": 18,
+          "lag": 0
+        },
+        {
+          "topic": "nv.update.v1",
+          "partition": 1,
+          "kafka_rows": 1,
+          "end_offset": 1,
+          "bronze_end": 1,
+          "lag": 0
+        }
+      ],
+      "total_lag": 0
+    },
+    "source_unique_vs_silver": {
+      "silver.learning_events": {
+        "bronze_unique_ids": 7869,
+        "silver_rows": 7869,
+        "matched": true
+      },
+      "silver.update_events": {
+        "bronze_unique_ids": 10,
+        "silver_rows": 10,
+        "matched": true
+      }
+    },
+    "history": {
+      "bronze.game_events": [
+        {
+          "version": 66,
+          "timestamp": "2026-11-20 00:53:19.721000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 65,
+          "timestamp": "2026-11-20 00:53:16.993000",
+          "operation": "STREAMING UPDATE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 64,
+          "timestamp": "2026-11-20 00:52:59.772000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 63,
+          "timestamp": "2026-11-20 00:52:54.912000",
+          "operation": "STREAMING UPDATE",
+          "metrics": {
+            "numOutputRows": "20",
+            "numAddedFiles": "3"
+          }
+        }
+      ],
+      "silver.learning_events": [
+        {
+          "version": 55,
+          "timestamp": "2026-11-20 00:53:22.785000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 54,
+          "timestamp": "2026-11-20 00:53:20.469000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 53,
+          "timestamp": "2026-11-20 00:53:09.773000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 52,
+          "timestamp": "2026-11-20 00:53:04.909000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "20",
+            "numTargetRowsInserted": "20",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ],
+      "silver.update_events": [
+        {
+          "version": 4,
+          "timestamp": "2026-11-20 00:45:30.589000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 3,
+          "timestamp": "2026-11-20 00:45:25.877000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "9",
+            "numTargetRowsInserted": "9",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 2,
+          "timestamp": "2026-11-20 00:35:24.749000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 1,
+          "timestamp": "2026-11-20 00:30:17.687000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ],
+      "gold.minigame_1m": [
+        {
+          "version": 36,
+          "timestamp": "2026-11-20 00:53:25.485000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 35,
+          "timestamp": "2026-11-20 00:53:23.601000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "1",
+            "numTargetRowsInserted": "1",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        },
+        {
+          "version": 34,
+          "timestamp": "2026-11-20 00:53:15.205000",
+          "operation": "OPTIMIZE",
+          "metrics": {
+            "numAddedFiles": "1"
+          }
+        },
+        {
+          "version": 33,
+          "timestamp": "2026-11-20 00:53:12.040000",
+          "operation": "MERGE",
+          "metrics": {
+            "numOutputRows": "3",
+            "numTargetRowsInserted": "3",
+            "numTargetRowsUpdated": "0",
+            "numTargetRowsDeleted": "0"
+          }
+        }
+      ]
+    },
+    "mongo_gold_mismatches": [],
+    "mongo_extra_documents": {},
+    "http_fixture_verification": {
+      "run_id": "e2e-full-1120",
+      "expected_unique": 255,
+      "conflict_quarantined": 1,
+      "failures": [],
+      "passed": true
+    },
+    "mongo_collections": {
+      "rt_minigame_1m": 136,
+      "rt_updates": 2,
+      "rt_alerts": 357,
+      "rt_summary": 1,
+      "rt_versions": 2
+    },
+    "checkpoints": {
+      "silver-audit-v2": {
+        "offset_files": 22,
+        "commit_files": 22
+      },
+      "bronze-v1": {
+        "offset_files": 35,
+        "commit_files": 35
+      },
+      "gold-failure-alerts-v1": {
+        "offset_files": 43,
+        "commit_files": 43
+      },
+      "silver-update_events-v2": {
+        "offset_files": 66,
+        "commit_files": 66
+      },
+      "gold-minigame-1m-v1": {
+        "offset_files": 54,
+        "commit_files": 54
+      },
+      "silver-learning_events-v2": {
+        "offset_files": 49,
+        "commit_files": 49
+      },
+      "gold-update-progress-v1": {
+        "offset_files": 6,
+        "commit_files": 6
+      }
+    }
+  },
+  "post_fix_latency_seconds": [
+    12.89
+  ]
+}

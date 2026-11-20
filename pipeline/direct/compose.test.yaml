@@ -1,0 +1,37 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: local-only-fixture
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: nodeverse
+    healthcheck:
+      test: [CMD, mysqladmin, ping, -h, localhost, -plocal-only-fixture]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  mongo:
+    image: mongo:8.0
+    healthcheck:
+      test: [CMD, mongosh, --quiet, --eval, 'db.adminCommand({ping:1})']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  checks:
+    build:
+      context: ..
+      dockerfile: direct/Dockerfile.test
+    environment:
+      DIRECT_MYSQL_HOST: mysql
+      DIRECT_MYSQL_USER: root
+      DIRECT_MYSQL_PASSWORD: local-only-fixture
+      DIRECT_MYSQL_DATABASE: nodeverse
+      DIRECT_MONGO_URI: mongodb://mongo:27017
+      DIRECT_MONGO_DATABASE: nodeverse_logs
+      DIRECT_SESSION_OPEN_STATUS: in_progress
+      DIRECT_RUN_OPEN_STATUS: in_progress
+      DIRECT_ATTEMPT_OPEN_OUTCOME: in_progress
+      DIRECT_FINALIZATION_POLICY_CONFIRMED: "1"
+    depends_on:
+      mysql: {condition: service_healthy}
+      mongo: {condition: service_healthy}

@@ -1,0 +1,16 @@
+{
+  "head": "24668618f958e6e39addabccfbdb51f81acb4652",
+  "branch": "feature/codex-v2-integration-cleanup",
+  "source_hashes": {
+    "collector.py": "39bb66243e8879cee357d0a59c4806a163c8463ae76082cd1df6e025c48a4c35",
+    "contract.py": "d4f643b0fe48d9b0e958719a556bf4f20e06d2e5392ada85a29568945c32c987",
+    "topics.py": "130fc53970cec3458e2cfcec2187fe1004d23e4c5bfe3a9adc934245885fc580",
+    "build_compose.py": "e5a8e193f483c9d5fbe8bdc9dfd3df0bb9a899b56ace125ca2e27d44b3fd4c4d",
+    "compose.json": "b38ac36f6c9a6318d3a139c8f5c4440efbbcb93183ac7900fd6f005f6dd8839f",
+    "spark/delta_stream.py": "f8513361544aa03445751c762e280d328fb1fe8b17391faf951d79dc79a29f25",
+    "spark/tables.py": "b96a5ff9a20b094086d219878c96b5be05b4c0f85c33546e40799954dc6e4397",
+    "spark/maintain.py": "8b4dfdba58753e204a980c713cae0d0f09fc07950acbaad65426de2e05aec8d3",
+    "spark/verify.py": "f7037879aa702e2702a58883bc2ea740d8cf6959ff8916947fa3c787ab346c04"
+  },
+  "note": "local working tree contains uncommitted changes; HEAD alone does not identify reviewed source"
+}
