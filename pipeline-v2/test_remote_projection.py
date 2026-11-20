@@ -81,3 +81,60 @@ def test_resolve_unknown_member_never_inserts():
  with pytest.raises(Waiting,match="member_mapping_required"):
   projection.resolve_member(sql,"unbound-install-id",{})
  assert not any("INSERT" in q for q in sql.c.queries) and sql.rollbacks==1
+
+def test_bad_initial_event_quarantined_then_valid_start_proceeds(dbs):
+ l,t=dbs;p=Projector(l,t,None,{});es=rows()
+ bad=dict(es[0],event_type='operation_succeeded',details={},run_id=str(uuid.uuid4()))
+ assert p.project(bad)['scope']=='learning_quarantine'
+ assert t.game_sessions.count_documents({})==0
+ # A new valid sequence begins with the actual problem start at #2.
+ valid=[dict(e,sequence=e['sequence']+1) for e in es]
+ valid[0]['event_id']=str(uuid.uuid4());valid[0]['payload_hash']='valid-start'
+ for e in valid:p.project(e)
+ assert t.problem_runs.count_documents({'status':'completed'})==1
+ assert t.gameplay_events.count_documents({})==5
+ assert t.pipeline_quarantined_events.count_documents({})==1
+ assert p.project(bad)['scope']=='learning_quarantine'
+ assert l.remote_session_cursors.find_one()['last_sequence']==6
+
+
+def test_missing_operation_does_not_block_completion(dbs):
+ l,t=dbs;p=Projector(l,t,None,{});es=rows();es[2]['details']={}
+ results=[p.project(e) for e in es]
+ assert results[2]['reason']=='operation_required'
+ assert t.gameplay_events.count_documents({})==4
+ assert t.problem_runs.find_one()['status']=='completed'
+ assert t.pipeline_learning_events.count_documents({})==5
+ assert t.pipeline_quarantined_events.find_one()['event']['details']=={}
+
+
+def test_quarantine_cannot_skip_missing_sequence(dbs):
+ l,t=dbs;p=Projector(l,t,None,{});e=rows()[2];e['details']={}
+ with pytest.raises(Waiting,match='sequence_gap'):p.project(e)
+ assert t.pipeline_quarantined_events.count_documents({})==0
+ assert l.remote_session_cursors.count_documents({})==0
+
+
+def test_quarantine_receipt_still_rejects_changed_payload(dbs):
+ l,t=dbs;p=Projector(l,t,None,{});e=dict(rows()[0],event_type='operation_succeeded')
+ p.project(e)
+ with pytest.raises(Conflict):p.project(dict(e,payload_hash='changed'))
+ assert t.pipeline_quarantined_events.count_documents({})==1
+
+
+def test_due_queue_is_fair_not_sorted_by_source_sequence(dbs):
+ from remote.worker import claim
+ l,_=dbs;n=datetime.now(timezone.utc)
+ l.remote_event_outbox.insert_many([
+  {'_id':'retry','state':'waiting_context','sequence':1,'next_attempt_at':n-timedelta(seconds=1),'queued_at':n-timedelta(hours=1),'attempts':10},
+  {'_id':'new','state':'pending','sequence':99,'next_attempt_at':n-timedelta(seconds=5),'queued_at':n-timedelta(seconds=5),'attempts':0}])
+ assert claim(l)['_id']=='new'
+ assert claim(l)['_id']=='retry'
+
+def test_predecessor_wakes_next_sequence_without_changing_other_waits(dbs):
+ l,t=dbs;es=rows();future=datetime.now(timezone.utc)+timedelta(hours=1)
+ for e in es[1:3]:
+  l.remote_event_outbox.insert_one({'_id':e['event_id'],'source_session_id':e['session_id'],'sequence':e['sequence'],'state':'waiting_context','reason':'sequence_gap:expected_1','next_attempt_at':future})
+ Projector(l,t,None,{}).project(es[0])
+ assert l.remote_event_outbox.find_one({'sequence':2})['next_attempt_at']<future-timedelta(minutes=30)
+ assert l.remote_event_outbox.find_one({'sequence':3})['next_attempt_at']==future.replace(microsecond=future.microsecond//1000*1000)

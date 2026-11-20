@@ -74,3 +74,9 @@ python remote_recovery_smoke.py
 게이트웨이는 `pipeline/compose.yaml`에 `compose.v2-bridge.yaml`을 추가하고 `V2_COLLECTOR_URL=http://nodeverse-v2-live-collector-1:8000`, 별도 내부 `V2_INGEST_KEY`를 비공개 파일로 설정합니다. 외부 바인딩은 현재 별도 `outputs/compose.lan.yaml`의 .81:8000 설정을 함께 사용합니다. 기본 수집기 8003과 로컬 Mongo 27020은 loopback 바인딩입니다. 기본 compose만 실행하면 remote 프로필은 시작되지 않습니다.
 
 후속 우선순위: 최신 EXE 실제 PC1 시험 → 회원 UUID 연결 확정 → 종료·일시정지 시간 규약 확정 → 나머지 게임별 시나리오 검증 → 지연/처리량 부하 시험과 outbox 적체 알림 → 백업·복원 및 장시간 운영 검증.
+
+## 2026-11-20 실플레이 감시 후 수정
+
+현재 격리·재시도 정책과 실제 nb 적재 결과는 [LIVE_WATCH_FIXES_2026-11-20.md](LIVE_WATCH_FIXES_2026-11-20.md)를 우선 참고하세요. 이전의 ‘순서 대기’ 설명은 실제 누락 번호에는 계속 적용됩니다. 이제 도착한 잘못된 이벤트는 감사 가능한 격리 영수증을 기록하고 다음 연속 이벤트를 처리합니다. 기본 게임 파일은 변경하지 않았습니다.
+
+새 PC 설정은 `remote/remote.env.example`을 `.env.remote`로 복사하고 비밀값을 별도 주입합니다. `remote/context.example.json`을 `.env.remote-context.json`으로 복사하면 기본적으로 회원 매핑이 비어 있습니다. 확인된 원본 player_id만 members 키에 추가하며, 값은 `external_member_key`, `verified: true`, `create_if_missing: false`로 기존 회원을 연결합니다. 실제 개인별 매핑 파일은 커밋하지 않습니다.

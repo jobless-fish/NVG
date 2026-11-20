@@ -169,7 +169,9 @@ def remote_delivery(event_id: UUID, x_api_key: str = Header(default="")):
     check_key(x_api_key)
     from remote.outbox import local_db
     row = local_db().remote_event_outbox.find_one({"_id": str(event_id)}, {
-        "state": 1, "reason": 1, "attempts": 1, "updated_at": 1, "archive_stored": 1, "result": 1})
+        "state": 1, "reason": 1, "attempts": 1, "updated_at": 1, "archive_stored": 1, "result": 1,
+        "queued_at": 1, "stored_at": 1, "completed_at": 1, "quarantined_at": 1,
+        "remote_archive_stored_at": 1, "queue_to_terminal_ms": 1})
     if not row:
         return {"event_id": str(event_id), "state": "not_staged", "meaning": "awaiting Silver/export; not a delivery confirmation"}
     row["event_id"] = row.pop("_id")

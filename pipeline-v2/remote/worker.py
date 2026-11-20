@@ -28,6 +28,15 @@ def contexts():
     p = Path(os.getenv("REMOTE_CONTEXT_PATH", "/run/private/remote-context.json"))
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"members": {}}
 
+
+def claim(local):
+    # Earliest due work wins; a low-sequence context retry must not starve arrivals.
+    return local.remote_event_outbox.find_one_and_update(
+        {"state": {"$in": ["pending", "retrying", "waiting_context"]}, "next_attempt_at": {"$lte": now()}},
+        {"$set": {"state": "processing", "updated_at": now()}, "$inc": {"attempts": 1}},
+        sort=[("next_attempt_at", 1), ("queued_at", 1), ("sequence", 1), ("_id", 1)],
+        return_document=ReturnDocument.AFTER)
+
 def acquire(local, owner):
     try:
         doc = local.remote_worker_lease.find_one_and_update(
@@ -94,16 +103,17 @@ def main():
             if time.monotonic() - last_metrics >= 5:
                 mirror_metrics(local, remote)
                 last_metrics = time.monotonic()
-            job = local.remote_event_outbox.find_one_and_update(
-                {"state":{"$in":["pending","retrying","waiting_context"]},"next_attempt_at":{"$lte":now()}},
-                {"$set":{"state":"processing","updated_at":now()},"$inc":{"attempts":1}},
-                sort=[("sequence",1),("occurred_at",1),("_id",1)], return_document=ReturnDocument.AFTER)
+            job = claim(local)
             if job is None:
                 local.remote_sink_health.update_one({"_id":"worker"},{"$set":{"state":"ready","updated_at":now()}},upsert=True)
                 time.sleep(0.5)
                 continue
             try:
                 event = job["event"]
+                Projector(local, remote, None, {}).archive(event)
+                local.remote_event_outbox.update_one({"_id": job["_id"], "remote_archive_stored_at": {"$exists": False}},
+                    {"$set": {"archive_stored": True, "remote_archive_stored_at": now()}})
+                local.remote_sink_health.update_one({"_id":"worker"}, {"$set":{"state":"processing","updated_at":now()}}, upsert=True)
                 if event.get("schema_version") == 2 and event.get("session_id"):
                     sql = sql_connect()
                     with sql.cursor() as cursor:
@@ -111,14 +121,19 @@ def main():
                         if cursor.fetchone()[0] != 1:
                             raise Waiting("other_database_writer_active")
                 result = Projector(local, remote, sql, contexts()).project(event)
+                state = "quarantined" if result.get("scope") == "learning_quarantine" else "stored"
+                completed = now()
                 local.remote_event_outbox.update_one({"_id":job["_id"]},{"$set":{
-                    "state":"stored","stored_at":now(),"updated_at":now(),"result":result,"archive_stored":True},
+                    "state":state,"completed_at":completed,
+                    ("quarantined_at" if state == "quarantined" else "stored_at"):completed,
+                    "updated_at":completed,"result":result,"archive_stored":True,
+                    "queue_to_terminal_ms":max(0,int((completed-job["queued_at"]).total_seconds()*1000))},
                     "$unset":{"reason":"","last_error":""}})
             except Waiting as e:
                 archived = remote["pipeline_learning_events"].find_one({"_id":job["_id"]},{"_id":1}) is not None
                 local.remote_event_outbox.update_one({"_id":job["_id"]},{"$set":{
                     "state":"waiting_context","reason":str(e),"archive_stored":archived,
-                    "updated_at":now(),"next_attempt_at":now()+timedelta(seconds=5)}})
+                    "updated_at":now(),"next_attempt_at":now()+timedelta(seconds=min(60,5*2**min(job["attempts"]-1,4)))}})
             except (Conflict, ValueError, KeyError, TypeError) as e:
                 local.remote_event_outbox.update_one({"_id":job["_id"]},{"$set":{
                     "state":"blocked","reason":str(e)[:200],"updated_at":now()}})

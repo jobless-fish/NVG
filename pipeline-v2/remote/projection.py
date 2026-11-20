@@ -89,6 +89,25 @@ class Projector:
         ensure(self.remote["pipeline_" + kind + "_events"], doc, ["payload_hash"])
         return kind
 
+    def receipt(self, event, result):
+        ensure(self.local.remote_projection_receipts, {"_id": event["event_id"], "payload_hash": event["payload_hash"], "result": result}, ["payload_hash"])
+        self.local.remote_session_cursors.update_one({"_id": event["session_id"]}, {"$set": {"last_sequence": event["sequence"], "last_event_id": event["event_id"]}}, upsert=True)
+        # A newly available predecessor removes this wait immediately; do not make
+        # a valid next event sleep through an old exponential retry interval.
+        self.local.remote_event_outbox.update_many({"source_session_id": event["session_id"],
+            "sequence": event["sequence"] + 1, "state": "waiting_context",
+            "reason": {"$regex": "^sequence_gap:"}},
+            {"$set": {"next_attempt_at": datetime.now(timezone.utc)}})
+        return result
+
+    def quarantine(self, event, reason):
+        # Only exclude a verified, present, contiguous source sequence. Never skip a gap.
+        doc = {"_id": event["event_id"], "payload_hash": event["payload_hash"], "reason": reason,
+               "source_session_id": event["session_id"], "sequence": event["sequence"],
+               "quarantined_at": datetime.now(timezone.utc), "event": event}
+        ensure(self.remote.pipeline_quarantined_events, doc, ["payload_hash", "reason"])
+        return self.receipt(event, {"scope": "learning_quarantine", "event_id": event["event_id"], "reason": reason})
+
     def project(self, event):
         kind = self.archive(event)
         if kind != "learning":
@@ -142,7 +161,7 @@ class Projector:
                        "problem_id": problem_id, "game_id": game_id, "started_at": occurred}
             ensure(self.local.remote_run_contexts, context, ["player_id", "session_id", "problem_id", "started_at"])
         if context is None:
-            raise Waiting("problem_started_required")
+            return self.quarantine(event, "event_without_prior_problem_start")
         if context["game_id"] != game_id or context["player_id"] != player:
             raise Conflict("run_context_mismatch")
         if occurred < context["started_at"]:
@@ -164,18 +183,18 @@ class Projector:
             attempt_id = str(uuid.UUID(event["attempt_id"]))
             attempt = self.remote.solution_attempts.find_one({"_id": attempt_id})
             if not attempt or attempt["run_id"] != source_run:
-                raise Waiting("attempt_started_required")
+                return self.quarantine(event, "event_without_prior_attempt_start")
             if attempt.get("ended_at") is not None and et not in ("attempt_succeeded", "attempt_failed"):
-                raise Conflict("event_after_attempt_closed")
+                return self.quarantine(event, "event_after_attempt_closed")
             if occurred < attempt["started_at"]:
                 raise Conflict("event_before_attempt_start")
         run_doc = self.remote.problem_runs.find_one({"_id": source_run})
         if run_doc and run_doc.get("ended_at") is not None and et != "problem_completed":
-            raise Conflict("event_after_run_closed")
+            return self.quarantine(event, "event_after_run_closed")
         if et in ("operation_succeeded", "operation_failed") and not details.get("operation"):
-            raise Waiting("operation_required")
+            return self.quarantine(event, "operation_required")
         if et == "operation_failed" and not details.get("failure_reason"):
-            raise Waiting("failure_reason_required")
+            return self.quarantine(event, "failure_reason_required")
         doc = {"_id": event["event_id"], "session_id": context["session_id"], "run_id": source_run,
                "attempt_id": attempt_id, "sequence": sequence, "event_type": "hint" if et == "hint_used" else et,
                "occurred_at": occurred, "received_at": dt(event["received_at"]), "source_payload_hash": event["payload_hash"],
@@ -200,9 +219,7 @@ class Projector:
             self.finalize(self.remote.problem_runs, source_run, "status", "completed", occurred)
         result = {"scope": "dashboard_records", "member_id": player, "session_id": context["session_id"],
                   "run_id": source_run, "attempt_id": attempt_id, "event_id": event["event_id"]}
-        ensure(self.local.remote_projection_receipts, {"_id": event["event_id"], "payload_hash": event["payload_hash"], "result": result}, ["payload_hash"])
-        self.local.remote_session_cursors.update_one({"_id": source_session}, {"$set": {"last_sequence": sequence, "last_event_id": event["event_id"]}}, upsert=True)
-        return result
+        return self.receipt(event, result)
 
     @staticmethod
     def finalize(collection, ident, field, status, ended):
