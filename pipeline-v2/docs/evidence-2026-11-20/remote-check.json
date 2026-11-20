@@ -1,0 +1,1 @@
+{"mysql_version": "8.4.13", "mongo_version": "8.0.34", "schema": "checked", "member_count": 3, "mongo_counts": {"game_sessions": 2, "game_problems": 2, "problem_runs": 2, "solution_attempts": 2, "gameplay_events": 2}}
